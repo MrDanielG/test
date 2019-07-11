@@ -1,4 +1,3 @@
-#Deteccion de colores
 #importar librerias
 import numpy as np  #libreria para formato de numeros
 import pandas as pd #libreria para cargar o llamar datos
@@ -62,32 +61,3 @@ def init_centroids(X,k):
 
 	return centroids
 
-
-#Carguemos la imagen
-data_imagen = loadmat('data/bird_small_kmeans.mat')
-A = data_imagen['A']
-A.shape
-
-# Normalicemos los rangos de los valores
-A = A/255.
-
-# Reshape el arreglo
-X = np.reshape(A, (A.shape[0] * A.shape[1], A.shape[2]))
-
-#Iniciar los centroides aleatoriamente
-initial_centroids = init_centroids(X, 16)
-
-#correr el algoritmo
-idx, centroids = run_k_means(X, initial_centroids, 10)
-
-#Obtener los centroides mas vercanos una vez mas
-idx = find_closest_centroids(X, centroids)
-
-#Mapear cada pixel al calor del centroide
-X_recovered = centroids[idx.astype(int),:]
-
-#Recambiar a las dimensiones originales
-X_recovered = np.reshape(X_recovered, (A.shape[0], A.shape[1], A.shape[2]))
-
-plt.imshow(X_recovered)
-plt.savefig('pajaro_chico.png')
